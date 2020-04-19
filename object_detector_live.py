@@ -3,8 +3,9 @@ import numpy as np
 import pandas as pd
 
 a = 0
-q = int(input('Enter your camera port:\n 1: for external port \n 2: for internal camera.'))
+q = int(input('Enter your camera port:\n 1: for external port \n 2: for internal camera.\n Input:  '))
 first_frame = None
+#Create a file or video recording file. Note - provide your own directory.
 filename = "sample_camera/file_%a.avi" % a
 video = cv2.VideoCapture(q)
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
