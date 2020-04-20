@@ -1,22 +1,31 @@
 import cv2
 import numpy as np
 import pandas as pd
+import time
 
 a = 0
-q = int(input('Enter your camera port:\n 1: for external port \n 2: for internal camera.\n Input:  '))
+q = int(input("Enter your camera port:\n 1:Press '0' for internal port \n 2:Press '1' for external camera.\n Input: "))
 first_frame = None
-#Create a file or video recording file. Note - provide your own directory.
-filename = "sample_camera/file_%a.avi" % a
+timestr = time.strftime("%H%M%S")
+t = int(timestr)
+filename = "sample_camera/file_%a.avi" % t
 video = cv2.VideoCapture(q)
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
-out = cv2.VideoWriter(filename, fourcc, 25.0, (640, 480))
+out = cv2.VideoWriter(filename, fourcc, 20.0, (640, 480))
+
+# A nice and clean countdown script.
+for i in list(range(4))[::-1]:
+    print(i+1)
+    time.sleep(1)
 
 while True:
     check, frame = video.read()
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    gray = cv2.GaussianBlur(gray, (21, 21), 0)
+    gray_1 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray = cv2.GaussianBlur(gray_1, (21, 21), 0)
+
 
     if first_frame is None:
+
         first_frame = gray
         continue
 
@@ -46,7 +55,7 @@ while True:
             out.write(frame)
 
 
-    cv2.imshow("capturing", gray)
+    cv2.imshow("capturing", gray_1)
     cv2.imshow("delta_frame", delta_frame)
     cv2.imshow("thresh_frame", thresh_delta)
     cv2.imshow("frame", frame)
@@ -57,7 +66,8 @@ while True:
     key = cv2.waitKey(1)
     if key == ord('q'):
         break
-print(a)
+# print(filename)
+print('{} frames are captured'.format(a))
 out.release()
 video.release()
 cv2.destroyAllWindows()
